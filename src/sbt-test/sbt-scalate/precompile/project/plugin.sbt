@@ -1,1 +1,1 @@
-addSbtPlugin("org.scalatra.scalate.tooling" % "sbt-scalate" % System.getProperty("project.version"))
+addSbtPlugin("org.scalatra.scalate" % "sbt-scalate" % System.getProperty("project.version"))

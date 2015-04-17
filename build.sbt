@@ -2,7 +2,7 @@ name := "sbt-scalate"
 
 organization := "org.scalatra.scalate"
 
-version := "0.1.0-SNAPSHOT"
+version := "0.2.0-SNAPSHOT"
 
 description := "An sbt plugin for pre-compiling Scalate templates; and generating static websites."
 

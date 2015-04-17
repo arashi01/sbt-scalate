@@ -19,31 +19,28 @@
 package org.scalatra.scalate.sbt
 
 import sbt._
-import classpath.ClasspathUtilities
 
+/** Contains setting keys and values automatically imported to `.sbt` files. */
+object ScalateImport {
 
-private[sbt] object Util {
+  val Scalate: Configuration = config("scalate")
+    .hide
+    .extend(Compile)
 
-  final val toolClassName = "org.fusesource.scalate.tool.ScalateMain"
+  val scalate: TaskKey[Seq[File]] = taskKey[Seq[File]]("Process Scalate templates.")
 
-  def forkOpts(javaHome: Option[File], cp: Seq[File], opts: String*): ForkOptions = ForkOptions(
-    javaHome,
-    runJVMOptions = Seq("-cp", cp.mkString(java.io.File.pathSeparator), Util.toolClassName) ++ opts
-  )
+  val scalateAutoLibs: SettingKey[Boolean] = settingKey[Boolean]("Append core Scalate dependencies to project library-dependencies if true.")
 
-  def runWithPathLoader[A](classpath: Seq[File], log: Logger)(f: ⇒ A): A = {
-    val loader = Thread.currentThread.getContextClassLoader
-    try {
-      val forPath = ClasspathUtilities.toLoader(classpath)
-      Thread.currentThread.setContextClassLoader(forPath)
-      f
-    } finally {
-      Thread.currentThread.setContextClassLoader(loader)
-    }
-  }
+  val scalateBootClass: SettingKey[Option[String]] = settingKey[Option[String]]("The Scalate boot class name.")
 
-  def collectFiles(target: File, filter: FileFilter): Seq[File] = {
-    (target ** filter).get map (_.getAbsoluteFile) filter (_ != target)
-  }
+  val scalateEscapeMarkup: SettingKey[Boolean] = settingKey[Boolean]("Determines whether sensitive markup characters are escaped for HTML/XML elements.")
+
+  val scalateOrganisation: SettingKey[String] = settingKey[String]("Allows specifying a custom groupID for Scalate dependency resolution.")
+
+  val scalatePackagePrefix: SettingKey[String] = settingKey[String]("Package prefix for generated Scala sources.")
+
+  val scalateTemplateImports: SettingKey[Seq[String]] = settingKey[Seq[String]]("Names of members to be imported by generated Scala sources.")
+
+  val scalateVersion: SettingKey[String] = settingKey[String]("The revision of Scalate used for compilation.")
 
 }
